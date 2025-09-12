@@ -1,38 +1,161 @@
+body {
+  background-color: #282c34;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  min-height: 10vh;
+  font-size: 2rem;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.App-main {
+  background-color: #363b46;
+  color: white;
+  align-items: start;
+  text-align: left;
+  padding: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-header ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  margin: 0;
+}
+
+.data-list {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 200px);
+  gap: 10px;
+  padding: 1px;
+}
+
+.data-item {
+  background: #444;
+  color: white;
+  max-width: 200px;
+  border-radius: 8px;
+}
+
+.data-item img {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}
+
+/* Form Styles */
+.form {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.form input,
+.form select,
+.form textarea {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+}
+
+.form input,
+.form select,
+.form textarea {
+  background: #222;
+  color: #fff;
+}
+
+button {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  background: #61dafb;
+  color: #222;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin: 10px;
+}
+
+.form button:hover {
+  background: #21a1f3;
+}
+
+.error {
+  color: red;
+  margin: 12px;
+}
+
+/* Slider Styles */
+.slider {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 10, 10, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.slider img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+}
+
+.slider-btn {
+  background: rgba(0, 0, 0, 0.5);
+  color: #ccc;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.slider-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+}
+
+.slider-navigation {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+}
+
+.slider > .slider-btn:first-child {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  width: 48px;
+  height: 48px;
+  font-size: 1.5rem;
+  z-index: 1010;
+  border-radius: 50%;
 }

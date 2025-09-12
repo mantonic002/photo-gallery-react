@@ -1,24 +1,96 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import DataList from "./components/DataList";
+import { deletePhoto, fetchPhotos, searchPhotos } from "./api/api";
+import { Photo } from "./models/DataModel";
+import LocationSearch from "./components/LocationSearch";
+import "./App.css";
 
 function App() {
+  const [data, setData] = useState<Photo[]>([]);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    restartData();
+  }, []);
+
+  const restartData = () => {
+    setData([]);
+    getPhotos();
+  };
+
+  const getPhotos = async (lastId?: string, limit?: number) => {
+    await fetchPhotos(lastId, limit)
+      .then((res) => {
+        setData(data.concat(res));
+        return res;
+      })
+      .catch((err) => {
+        console.error(err);
+        setErr("Error fetching photos");
+        return [];
+      });
+  };
+
+  const onSearchPhotos = async ({
+    long,
+    lat,
+    dist,
+  }: {
+    long: string;
+    lat: string;
+    dist: string;
+  }) => {
+    await searchPhotos(long, lat, dist)
+      .then((res) => {
+        setData(res);
+        return res;
+      })
+      .catch((err) => {
+        console.error(err);
+        setErr("Error searching photos");
+        return [];
+      });
+  };
+
+  const handleDeletePhoto = (id: string) => {
+    deletePhoto(id)
+      .then(() => {
+        setData(data.filter((photo) => photo.ID !== id));
+      })
+      .catch((err) => {
+        console.error(err);
+        setErr("Error deleting photo");
+      });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <ul>
+          <li>
+            <h1>Photo Gallery</h1>
+          </li>
+          <li>
+            <LocationSearch onSearch={onSearchPhotos} />
+          </li>
+        </ul>
       </header>
+      <main className="App-main">
+        <DataList
+          data={data}
+          loadMore={getPhotos}
+          deletePhoto={handleDeletePhoto}
+        />
+        <button
+          onClick={() =>
+            getPhotos(data.length ? data[data.length - 1].ID : undefined, 10)
+          }
+        >
+          Load More
+        </button>
+
+        {err && <div className="error">{err}</div>}
+      </main>
     </div>
   );
 }
