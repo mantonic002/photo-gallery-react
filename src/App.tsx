@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DataList from "./components/DataList";
 import {
   deletePhoto,
+  deletePhotos,
   fetchPhotos,
   searchPhotos,
   TextSearchLocation,
@@ -74,6 +75,17 @@ function App() {
       });
   };
 
+  const handleDeletePhotos = (ids: string[]) => {
+    deletePhotos(ids)
+      .then(() => {
+        setData(data.filter((photo) => !ids.includes(photo.ID)));
+      })
+      .catch((err) => {
+        console.error(err);
+        setErr("Error deleting photos");
+      });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -91,6 +103,7 @@ function App() {
           data={data}
           loadMore={getPhotos}
           deletePhoto={handleDeletePhoto}
+          deletePhotos={handleDeletePhotos}
         />
         <button
           onClick={() =>

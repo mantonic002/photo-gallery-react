@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Photo } from "../models/DataModel";
 import { API_URL } from "../api/api";
+import { FaCaretLeft, FaCaretRight, FaRegTrashAlt } from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
 
 interface FullScreenImageSliderProps {
   photos: Photo[];
@@ -58,14 +60,14 @@ function FullScreenImageSlider({
   return (
     <div className="slider">
       <button className="slider-btn" onClick={onClose}>
-        &times;
+        <FaX />
       </button>
       <button
         className="slider-btn"
         onClick={handleDelete}
         title="Delete Photo"
       >
-        DELETE
+        <FaRegTrashAlt />
       </button>
       {photos.length > 0 && photos[currentIndex] && (
         <>
@@ -75,10 +77,10 @@ function FullScreenImageSlider({
           />
           <div className="slider-navigation">
             <button className="slider-btn" onClick={prevImage}>
-              &lt;
+              <FaCaretLeft />
             </button>
             <button className="slider-btn" onClick={nextImage}>
-              &gt;
+              <FaCaretRight />
             </button>
           </div>
         </>

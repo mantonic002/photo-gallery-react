@@ -44,9 +44,14 @@ body {
   color: white;
   max-width: 200px;
   border-radius: 8px;
+  display: inline-block;
 }
 
-.data-item img {
+.image-container {
+  position: relative;
+}
+
+.image-container img {
   width: 100%;
   max-width: 420px;
   height: auto;
@@ -89,6 +94,16 @@ button {
 
 button:hover {
   background: #21a1f3;
+}
+
+.red-btn {
+  background: #ff4d4f;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.red-btn:hover {
+  background: #d9363e;
 }
 
 .error {
@@ -158,4 +173,38 @@ button:hover {
   font-size: 1.5rem;
   z-index: 1010;
   border-radius: 50%;
+}
+
+/* Selection Button Styles */
+.select-btn {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.select-btn .checkmark {
+  color: #ffffff;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.select-btn:hover,
+.checkmark:hover {
+  background: rgba(0, 0, 0, 0);
+  color: #61dafb;
+}
+
+.select-btn.selected .checkmark {
+  color: #61dafb;
+
+  font-weight: bold;
 }

@@ -78,7 +78,7 @@ export const deletePhoto = async (id: string): Promise<void> => {
 
 export const deletePhotos = async (ids: string[]): Promise<void> => {
   try {
-    await axios.delete(`${API_URL}/photos`, { data: { ids } });
+    await axios.delete(`${API_URL}/photos/bulk-delete`, { data: { ids } });
   } catch (error) {
     console.error("Error deleting photos:", error);
     throw error;
