@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Photo } from "../models/DataModel";
+import { NominatimResult, Photo } from "../models/DataModel";
 
 export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
@@ -17,6 +17,28 @@ export const fetchPhotos = async (
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const TextSearchLocation = async (
+  query: string
+): Promise<NominatimResult[]> => {
+  try {
+    const response = await axios.get<NominatimResult[]>(
+      process.env.REACT_APP_OSM_API_URL ||
+        "https://nominatim.openstreetmap.org/search",
+      {
+        params: {
+          q: query,
+          format: "json",
+          limit: 1,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching location data:", error);
     throw error;
   }
 };

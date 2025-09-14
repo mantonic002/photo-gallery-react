@@ -87,7 +87,7 @@ button {
   margin: 10px;
 }
 
-.form button:hover {
+button:hover {
   background: #21a1f3;
 }
 

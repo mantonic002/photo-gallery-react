@@ -1,35 +1,28 @@
 import { useState } from "react";
 
 interface LocationSearchProps {
-  onSearch: (params: { long: string; lat: string; dist: string }) => void;
+  onSearch: (params: { query: string; dist: string }) => void;
 }
 
 function LocationSearch({ onSearch }: LocationSearchProps) {
-  const [long, setLong] = useState<string | "">("");
-  const [lat, setLat] = useState<string | "">("");
+  const [query, setQuery] = useState<string | "">("");
   const [dist, setDist] = useState<string | "">("");
 
   const handleSearch = () => {
-    onSearch({ long, lat, dist });
+    onSearch({ query, dist });
   };
 
   return (
     <div className="form location-search">
       <input
         type="text"
-        placeholder="Longitude"
-        value={long}
-        onChange={(e) => setLong(e.target.value)}
+        placeholder="query"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
       />
       <input
         type="text"
-        placeholder="Latitude"
-        value={lat}
-        onChange={(e) => setLat(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Distance"
+        placeholder="Distance(meters)"
         value={dist}
         onChange={(e) => setDist(e.target.value)}
       />

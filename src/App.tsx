@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import DataList from "./components/DataList";
-import { deletePhoto, fetchPhotos, searchPhotos } from "./api/api";
+import {
+  deletePhoto,
+  fetchPhotos,
+  searchPhotos,
+  TextSearchLocation,
+} from "./api/api";
 import { Photo } from "./models/DataModel";
 import LocationSearch from "./components/LocationSearch";
 import "./App.css";
@@ -32,15 +37,21 @@ function App() {
   };
 
   const onSearchPhotos = async ({
-    long,
-    lat,
+    query,
     dist,
   }: {
-    long: string;
-    lat: string;
+    query: string;
     dist: string;
   }) => {
-    await searchPhotos(long, lat, dist)
+    await TextSearchLocation(query)
+      .then((res) => {
+        if (res.length === 0) {
+          setErr("No location found");
+          return [];
+        }
+        const { lon, lat } = res[0];
+        return searchPhotos(lon, lat, dist);
+      })
       .then((res) => {
         setData(res);
         return res;
