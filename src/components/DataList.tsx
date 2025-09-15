@@ -19,6 +19,20 @@ function DataList({
 }: DataListProps) {
   const [fsPhoto, setFsPhoto] = useState<Photo | null>(null);
   const [selectedPhotos, setSelectedPhotos] = useState<Photo[]>([]);
+  const [dataByDate, setDataByDate] = useState<{ [date: string]: Photo[] }>({});
+
+  // Group data by date
+  React.useEffect(() => {
+    const groupedData: { [date: string]: Photo[] } = {};
+    data.forEach((item) => {
+      const date = new Date(item.TakenAt).toDateString();
+      if (!groupedData[date]) {
+        groupedData[date] = [];
+      }
+      groupedData[date].push(item);
+    });
+    setDataByDate(groupedData);
+  }, [data]);
 
   const onItemClick = (id: string) => {
     data.forEach((item) => {
@@ -56,17 +70,22 @@ function DataList({
           </button>
         </div>
       )}
-      <div className="data-list">
-        {data.map((item) => (
-          <DataItem
-            key={item.ID}
-            data={item}
-            onClick={onItemClick}
-            addToSelectedPhotos={addToSelectedPhotos}
-            isSelected={selectedPhotos.some((p) => p.ID === item.ID)}
-          />
-        ))}
-      </div>
+      {Object.entries(dataByDate).map(([date, items]) => (
+        <>
+          <h3>{date}</h3>
+          <div className="data-list" key={date}>
+            {items.map((item) => (
+              <DataItem
+                key={item.ID}
+                data={item}
+                onClick={onItemClick}
+                addToSelectedPhotos={addToSelectedPhotos}
+                isSelected={selectedPhotos.some((p) => p.ID === item.ID)}
+              />
+            ))}
+          </div>
+        </>
+      ))}
       {fsPhoto && (
         <FullScreenImageSlider
           photos={data}

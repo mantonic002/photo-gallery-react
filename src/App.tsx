@@ -91,7 +91,7 @@ function App() {
       <header className="App-header">
         <ul>
           <li>
-            <h1>Photo Gallery</h1>
+            <h3>Photo Gallery</h3>
           </li>
           <li>
             <LocationSearch onSearch={onSearchPhotos} />
