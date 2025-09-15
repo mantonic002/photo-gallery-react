@@ -14,6 +14,7 @@ import "./App.css";
 function App() {
   const [data, setData] = useState<Photo[]>([]);
   const [err, setErr] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
 
   useEffect(() => {
     restartData();
@@ -32,7 +33,11 @@ function App() {
       })
       .catch((err) => {
         console.error(err);
-        setErr("Error fetching photos");
+        if (err.response.status === 404) {
+          setInfo("That's all");
+        } else {
+          setErr("Error fetching photos");
+        }
         return [];
       });
   };
@@ -59,7 +64,11 @@ function App() {
       })
       .catch((err) => {
         console.error(err);
-        setErr("Error searching photos");
+        if (err.response.status === 404) {
+          setInfo("No photos found");
+        } else {
+          setErr("Error searching photos");
+        }
         return [];
       });
   };
@@ -114,6 +123,7 @@ function App() {
         </button>
 
         {err && <div className="error">{err}</div>}
+        {info && <div className="info">{info}</div>}
       </main>
     </div>
   );

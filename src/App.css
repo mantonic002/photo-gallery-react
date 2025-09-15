@@ -111,6 +111,11 @@ button:hover {
   margin: 12px;
 }
 
+.info {
+  color: blue;
+  margin: 12px;
+}
+
 /* Slider Styles */
 .slider {
   position: fixed;

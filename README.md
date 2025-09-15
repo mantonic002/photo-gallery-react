@@ -1,46 +1,81 @@
-# Getting Started with Create React App
+# Photo Backup App (Frontend)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React frontend for the Photo Backup App, a self-hosted alternative to Google Photos. Integrates with the [Go backend](https://github.com/mantonic002/photo-backup) to manage photo uploads, viewing, geolocation search, and deletion.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Photo Gallery**: Displays thumbnails grouped by date.
+- **Pagination**: Paginates photos with a "Load More" button (infinite scroll not yet implemented).
+- **Full-Screen Slider**: View photos with navigation and deletion.
+- **Geolocation Search**: Find photos by location and distance.
+- **Bulk Deletion**: Select and delete multiple photos.
 
-### `npm start`
+## Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Node.js**
+- **Backend**: Running Photo Backup App backend (see [backend README](https://github.com/mantonic002/photo-backup)).
+- **Dependencies**: `react`, `react-dom`, `react-icons`, `axios`.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Setup
 
-### `npm test`
+1. **Clone Repository**:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```bash
+   git clone <repository-url>
+   cd photo-backup/frontend
+   ```
 
-### `npm run build`
+2. **Install Dependencies**:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```bash
+   npm install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Configure Environment**:
+   Edit `.env`:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```plaintext
+    REACT_APP_API_URL=http://localhost:8080
+    REACT_APP_OSM_API_URL=https://nominatim.openstreetmap.org/search
+   ```
 
-### `npm run eject`
+4. **Run**:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+   ```bash
+   npm run dev
+   ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   Access at `http://localhost:3000`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+5. **Ensure Backend**: Backend must run at `REACT_APP_API_URL`.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Project Structure
 
-## Learn More
+- `src/App.tsx`: Main component for state and API calls.
+- `src/components/DataList.tsx`: Lists photos by date.
+- `src/components/DataItem.tsx`: Renders photo thumbnails.
+- `src/components/FullScreenImageSlider.tsx`: Full-screen photo slider.
+- `src/components/LocationSearch.tsx`: Location search form.
+- `src/api/api.ts`: API functions for backend interaction.
+- `src/models/DataModel.ts`: `Photo` interface.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Usage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **View Photos**: Loads photos grouped by date; click "Load More" for more.
+- **Full-Screen View**: Click a thumbnail to view, navigate, or delete.
+- **Search**: Enter location and distance to find photos.
+- **Delete**: Select photos with checkmarks; delete with trash button.
+
+## API Integration
+
+- Nominatim public API for text to coordinates conversion
+- See [backend repo](https://github.com/mantonic002/photo-backup)
+
+## Notes
+
+- **Infinite Scroll**: Not implemented; "Load More" button used instead.
+- **Auth**: Not implemented yet.
+
+## Backend
+
+See [backend README](https://github.com/mantonic002/photo-backup) for setup.
