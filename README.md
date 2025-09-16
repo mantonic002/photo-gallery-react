@@ -21,8 +21,8 @@ A React frontend for the Photo Backup App, a self-hosted alternative to Google P
 1. **Clone Repository**:
 
    ```bash
-   git clone <repository-url>
-   cd photo-backup/frontend
+   git clone https://github.com/mantonic002/photo-gallery-react.git
+   cd photo-backup-react
    ```
 
 2. **Install Dependencies**:
