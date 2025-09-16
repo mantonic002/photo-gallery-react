@@ -3,6 +3,7 @@ import DataItem from "./DataItem";
 import { Photo } from "../models/DataModel";
 import FullScreenImageSlider from "./FullScreenImageSlider";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 interface DataListProps {
   data: Photo[];
@@ -56,7 +57,13 @@ function DataList({
   return (
     <>
       {selectedPhotos.length > 0 && (
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: -50, height: 0 }}
+          animate={{ opacity: 1, y: 0, height: "auto" }}
+          exit={{ opacity: 0, y: -50, height: 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          layout // Ensures smooth layout shift for other content
+        >
           <span>{selectedPhotos.length} selected</span>
           <button
             className="red-btn"
@@ -68,7 +75,7 @@ function DataList({
           >
             <FaRegTrashAlt />
           </button>
-        </div>
+        </motion.div>
       )}
       {Object.entries(dataByDate).map(([date, items]) => (
         <>

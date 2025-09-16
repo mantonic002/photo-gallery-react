@@ -59,16 +59,18 @@ function FullScreenImageSlider({
 
   return (
     <div className="slider">
-      <button className="slider-btn" onClick={onClose}>
-        <FaX />
-      </button>
-      <button
-        className="slider-btn"
-        onClick={handleDelete}
-        title="Delete Photo"
-      >
-        <FaRegTrashAlt />
-      </button>
+      <div className="slider-options">
+        <button
+          className="slider-btn"
+          onClick={handleDelete}
+          title="Delete Photo"
+        >
+          <FaRegTrashAlt />
+        </button>
+        <button className="slider-btn" onClick={onClose}>
+          <FaX />
+        </button>
+      </div>
       {photos.length > 0 && photos[currentIndex] && (
         <>
           <img

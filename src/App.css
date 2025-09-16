@@ -21,7 +21,7 @@ body {
   padding: 10px;
 }
 
-.App-header ul {
+ul {
   list-style-type: none;
   display: flex;
   flex-direction: row;
@@ -96,6 +96,11 @@ button:hover {
   background: #21a1f3;
 }
 
+button:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
 .red-btn {
   background: #ff4d4f;
   color: #fff;
@@ -160,24 +165,23 @@ button:hover {
   color: #fff;
 }
 
-.slider-navigation {
+.slider-navigation,
+.slider-options {
   position: absolute;
-  bottom: 40px;
-  left: 50%;
+
   transform: translateX(-50%);
   display: flex;
   gap: 16px;
 }
 
-.slider > .slider-btn:first-child {
-  position: absolute;
+.slider-navigation {
+  bottom: 40px;
+  left: 50%;
+}
+
+.slider-options {
   top: 24px;
-  right: 32px;
-  width: 48px;
-  height: 48px;
-  font-size: 1.5rem;
-  z-index: 1010;
-  border-radius: 50%;
+  right: 24px;
 }
 
 /* Selection Button Styles */
@@ -210,6 +214,5 @@ button:hover {
 
 .select-btn.selected .checkmark {
   color: #61dafb;
-
   font-weight: bold;
 }
