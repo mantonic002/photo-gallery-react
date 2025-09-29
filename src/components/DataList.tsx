@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataItem from "./DataItem";
 import { Photo } from "../models/DataModel";
 import FullScreenImageSlider from "./FullScreenImageSlider";
@@ -23,7 +23,7 @@ function DataList({
   const [dataByDate, setDataByDate] = useState<{ [date: string]: Photo[] }>({});
 
   // Group data by date
-  React.useEffect(() => {
+  useEffect(() => {
     const groupedData: { [date: string]: Photo[] } = {};
     data.forEach((item) => {
       const date = new Date(item.TakenAt).toDateString();
