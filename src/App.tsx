@@ -2,15 +2,33 @@ import DataList from "./components/DataList";
 import { deletePhoto, deletePhotos, fetchPhotos } from "./api/api";
 import "./App.css";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { Photo } from "./models/DataModel";
 
 function App() {
   const queryClient = useQueryClient();
 
-  const { data: photos, isLoading } = useQuery({
-    queryFn: () => fetchPhotos(),
-    queryKey: ["photos"],
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery<
+      Photo[],
+      Error,
+      InfiniteData<Photo[]>,
+      [_: string],
+      string | undefined
+    >({
+      queryKey: ["photos"],
+      queryFn: ({ pageParam }) => fetchPhotos(pageParam, 10),
+      getNextPageParam: (lastPage) => {
+        if (lastPage.length < 10) return undefined;
+        return lastPage[lastPage.length - 1].ID;
+      },
+      initialPageParam: undefined,
+    });
 
   const { mutate: deleteMutation } = useMutation({
     mutationFn: deletePhoto,
@@ -26,8 +44,6 @@ function App() {
     },
   });
 
-  const getPhotos = (lastId?: string, limit?: number) => {};
-
   return (
     <div className="App">
       <header className="App-header">
@@ -40,11 +56,18 @@ function App() {
       </header>
       <main className="App-main">
         <DataList
-          data={photos || []}
-          loadMore={getPhotos}
+          data={data?.pages.flat() || []}
+          loadMore={fetchNextPage}
           deletePhoto={deleteMutation}
           deletePhotos={deleteMultipleMutation}
         />
+        <button
+          onClick={() => {
+            if (hasNextPage) fetchNextPage();
+          }}
+        >
+          Load more
+        </button>
       </main>
     </div>
   );

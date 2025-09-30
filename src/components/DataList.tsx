@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 interface DataListProps {
   data: Photo[];
-  loadMore: (lastId?: string, limit?: number) => void;
+  loadMore: () => void;
   deletePhoto: (id: string) => void;
   deletePhotos: (ids: string[]) => void;
 }
