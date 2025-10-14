@@ -1,7 +1,6 @@
 import DataList from "./components/DataList";
 import { deletePhoto, deletePhotos, fetchPhotos } from "./api/api";
 import "./App.css";
-
 import {
   InfiniteData,
   useInfiniteQuery,
@@ -9,9 +8,11 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { Photo } from "./models/DataModel";
+import { useEffect, useRef } from "react";
 
 function App() {
   const queryClient = useQueryClient();
+  const observerRef = useRef<HTMLDivElement>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery<
@@ -44,6 +45,25 @@ function App() {
     },
   });
 
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+        console.log("fetching more....");
+      }
+    });
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -61,13 +81,8 @@ function App() {
           deletePhoto={deleteMutation}
           deletePhotos={deleteMultipleMutation}
         />
-        <button
-          onClick={() => {
-            if (hasNextPage) fetchNextPage();
-          }}
-        >
-          Load more
-        </button>
+        {(isFetchingNextPage || isLoading) && <p>Loading...</p>}
+        <div ref={observerRef} style={{ height: "20px" }} />
       </main>
     </div>
   );
