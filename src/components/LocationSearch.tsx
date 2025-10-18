@@ -1,3 +1,4 @@
+// src/components/LocationSearch.tsx
 import { useState } from "react";
 
 interface LocationSearchProps {
@@ -5,28 +6,41 @@ interface LocationSearchProps {
 }
 
 function LocationSearch({ onSearch }: LocationSearchProps) {
-  const [query, setQuery] = useState<string | "">("");
-  const [dist, setDist] = useState<string | "">("");
+  const [query, setQuery] = useState<string>("");
+  const [dist, setDist] = useState<string>("");
 
   const handleSearch = () => {
-    onSearch({ query, dist });
+    if (query.trim() && dist.trim()) {
+      onSearch({ query: query.trim(), dist: dist.trim() });
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && query.trim() && dist.trim()) {
+      handleSearch();
+    }
   };
 
   return (
     <div className="form location-search">
       <input
         type="text"
-        placeholder="query"
+        placeholder="Enter location (e.g., New York)"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyPress}
       />
       <input
-        type="text"
-        placeholder="Distance(meters)"
+        type="number"
+        placeholder="Distance (meters)"
         value={dist}
         onChange={(e) => setDist(e.target.value)}
+        onKeyDown={handleKeyPress}
+        min="0"
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} disabled={!query.trim() || !dist.trim()}>
+        Search
+      </button>
     </div>
   );
 }
