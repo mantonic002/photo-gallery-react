@@ -1,9 +1,8 @@
 // src/hooks/usePhotoSearch.ts
 import { useState } from "react";
 import { TextSearchLocation } from "../api/api";
-import { NominatimResult } from "../models/DataModel";
 
-interface SearchParams {
+export interface SearchParams {
   lat?: string;
   long?: string;
   dist?: string;

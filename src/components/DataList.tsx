@@ -1,26 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DataItem from "./DataItem";
 import { Photo } from "../models/DataModel";
 import FullScreenImageSlider from "./FullScreenImageSlider";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { usePhotos } from "../contexts/PhotoContext";
 
-interface DataListProps {
-  data: Photo[];
-  loadMore: () => void;
-  deletePhoto: (id: string) => void;
-  deletePhotos: (ids: string[]) => void;
-}
-
-function DataList({
-  data,
-  loadMore,
-  deletePhoto,
-  deletePhotos,
-}: DataListProps) {
+function DataList() {
+  const observerRef = useRef<HTMLDivElement>(null);
+  const {
+    photos: data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    deletePhotos,
+  } = usePhotos();
   const [fsPhoto, setFsPhoto] = useState<Photo | null>(null);
   const [selectedPhotos, setSelectedPhotos] = useState<Photo[]>([]);
   const [dataByDate, setDataByDate] = useState<{ [date: string]: Photo[] }>({});
+
+  // IntersectionObserver for infinte scroll loading
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // Group data by date
   useEffect(() => {
@@ -56,6 +76,7 @@ function DataList({
 
   return (
     <>
+      {isLoading && !data && <p>Loading...</p>}
       {selectedPhotos.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: -50, height: 0 }}
@@ -98,10 +119,10 @@ function DataList({
           photos={data}
           initialIndex={data.findIndex((p) => p.ID === fsPhoto.ID)}
           onClose={() => setFsPhoto(null)}
-          loadMore={loadMore}
-          deletePhoto={deletePhoto}
         />
       )}
+      {isFetchingNextPage && <p>Loading more...</p>}
+      <div ref={observerRef} style={{ height: "20px" }} />
     </>
   );
 }

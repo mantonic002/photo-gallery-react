@@ -3,30 +3,27 @@ import { Photo } from "../models/DataModel";
 import { API_URL } from "../api/api";
 import { FaCaretLeft, FaCaretRight, FaRegTrashAlt } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
+import { usePhotos } from "../contexts/PhotoContext";
 
 interface FullScreenImageSliderProps {
   photos: Photo[];
   initialIndex: number;
   onClose: () => void;
-  loadMore: (lastId?: string, limit?: number) => void;
-  deletePhoto: (id: string) => void;
 }
 
 function FullScreenImageSlider({
-  photos,
   initialIndex,
   onClose,
-  loadMore,
-  deletePhoto,
 }: FullScreenImageSliderProps) {
+  const { photos, fetchNextPage, hasNextPage, deletePhoto } = usePhotos();
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
   // load more images when close to end
   useEffect(() => {
-    if (currentIndex >= photos.length - 2) {
-      loadMore(photos[photos.length - 1].ID, 5);
+    if (currentIndex >= photos.length - 2 && hasNextPage) {
+      fetchNextPage();
     }
-  }, [currentIndex, photos, loadMore]);
+  }, [currentIndex, photos, fetchNextPage]);
 
   // set initial index
   useEffect(() => {

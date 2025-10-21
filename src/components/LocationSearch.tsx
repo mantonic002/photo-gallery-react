@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 interface LocationSearchProps {
-  onSearch: (params: { query: string; dist: string }) => void;
+  onSearch: (query: string, dist: string) => Promise<void>;
 }
 
 function LocationSearch({ onSearch }: LocationSearchProps) {
@@ -11,7 +11,7 @@ function LocationSearch({ onSearch }: LocationSearchProps) {
 
   const handleSearch = () => {
     if (query.trim() && dist.trim()) {
-      onSearch({ query: query.trim(), dist: dist.trim() });
+      onSearch(query.trim(), dist.trim());
     }
   };
 
