@@ -4,6 +4,7 @@ import { API_URL } from "../api/api";
 import { FaCaretLeft, FaCaretRight, FaRegTrashAlt } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import { usePhotos } from "../contexts/PhotoContext";
+import JwtImg from "./JwtImg";
 
 interface FullScreenImageSliderProps {
   photos: Photo[];
@@ -70,7 +71,7 @@ function FullScreenImageSlider({
       </div>
       {photos.length > 0 && photos[currentIndex] && (
         <>
-          <img
+          <JwtImg
             src={`${API_URL}/files/${photos[currentIndex].ID}.jpg`}
             alt={photos[currentIndex].ID}
           />

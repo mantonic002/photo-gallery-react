@@ -2,6 +2,7 @@ import React from "react";
 import { Photo } from "../models/DataModel";
 import { API_URL } from "../api/api";
 import { FaCheckCircle, FaRegCheckCircle } from "react-icons/fa";
+import JwtImg from "./JwtImg";
 
 interface DataItemProps {
   data: Photo;
@@ -19,7 +20,7 @@ function DataItem({
   return (
     <div className="data-item">
       <div className="image-container">
-        <img
+        <JwtImg
           src={`${API_URL}/files/${data.ID}_thumb.jpg`}
           alt={data.ID}
           onClick={() => onClick(data.ID)}

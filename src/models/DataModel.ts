@@ -21,3 +21,7 @@ export interface NominatimResult {
   boundingbox: string[]; // [latMin, latMax, longMin, longMax]
   display_name: string;
 }
+
+export interface LoginResp {
+  token: string;
+}
