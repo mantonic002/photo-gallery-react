@@ -5,14 +5,7 @@ export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
 const apiClient = axios.create({
   baseURL: API_URL,
-});
-
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true,
 });
 
 axios.interceptors.response.use(
@@ -20,10 +13,10 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401) {
-      localStorage.removeItem("token");
+    if (error.response?.status === 401) {
+      window.dispatchEvent(new Event("session-expired"));
     }
-    return error;
+    return Promise.reject(error);
   }
 );
 
@@ -82,31 +75,15 @@ export const deletePhotos = async (ids: string[]): Promise<void> => {
 
 export const loginApi = async (pw: string): Promise<LoginResp> => {
   try {
-    const response = await apiClient.post<LoginResp>("/login", {
-      password: pw,
-    });
+    const response = await apiClient.post<LoginResp>(
+      "/login",
+      { password: pw },
+      { withCredentials: true }
+    );
     return response.data;
   } catch (error) {
     console.error("Error logging in:", error);
     throw error;
-  }
-};
-
-export const fetchImage = async (src: string): Promise<string> => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("No JWT token found");
-    }
-
-    const response = await apiClient.get(src, {
-      responseType: "blob",
-    });
-
-    return URL.createObjectURL(response.data);
-  } catch (err) {
-    console.error("Error fetching image:", err);
-    throw err; // Propagate error to caller
   }
 };
 

@@ -4,32 +4,22 @@ import { loginApi } from "../api/api";
 interface AuthContextType {
   loggedIn: boolean;
   login: (pw: string) => Promise<void>;
-  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [loggedIn, setLoggedIn] = useState<boolean>(
-    localStorage.getItem("token") !== null
-  );
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   const login = async (pw: string) => {
     try {
-      const response = await loginApi(pw);
-      localStorage.setItem("token", response.token);
+      await loginApi(pw);
       setLoggedIn(true);
     } catch (err) {
       console.error("Failed login:", err);
-      localStorage.removeItem("token");
       setLoggedIn(false);
       throw err;
     }
-  };
-
-  const logout = () => {
-    setLoggedIn(false);
-    localStorage.removeItem("token");
   };
 
   return (
@@ -37,7 +27,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         loggedIn,
         login,
-        logout,
       }}
     >
       {children}

@@ -11,13 +11,31 @@ function App() {
   const { loggedIn, login } = useAuth();
 
   useEffect(() => {
+    const handleSessionExpired = () => {
+      setTimeout(() => {
+        const userInput = window.prompt(
+          "Session expired. Please enter password:"
+        );
+        if (userInput !== null) {
+          login(userInput);
+        }
+      }, 0);
+    };
+
+    window.addEventListener("session-expired", handleSessionExpired);
+    return () => {
+      window.removeEventListener("session-expired", handleSessionExpired);
+    };
+  }, [login]);
+
+  useEffect(() => {
     if (!loggedIn) {
-      const userInput = window.prompt("password");
+      const userInput = window.prompt("password:");
       if (userInput !== null) {
         login(userInput);
       }
     }
-  }, [loggedIn]);
+  }, [loggedIn, login]);
 
   return (
     <PhotoProvider searchParams={searchParams}>
