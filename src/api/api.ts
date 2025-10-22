@@ -7,21 +7,28 @@ export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
 interface FetchPhotosParams {
   lastId?: string;
   limit?: number;
-  long?: string;
-  lat?: string;
-  dist?: string;
+  searchParams?: string[];
 }
 
 export const fetchPhotos = async ({
   lastId = "",
   limit = 10,
-  long,
-  lat,
-  dist,
+  searchParams,
 }: FetchPhotosParams): Promise<Photo[]> => {
-  const isSearch = long && lat && dist;
+  const isSearch = searchParams && searchParams.length > 0;
   const endpoint = isSearch ? "/photos/search" : "/photos";
-  const params = { lastId, limit, ...(isSearch ? { long, lat, dist } : {}) };
+  const params = {
+    lastId,
+    limit,
+    ...(isSearch
+      ? {
+          latMin: searchParams[0],
+          latMax: searchParams[1],
+          longMin: searchParams[2],
+          longMax: searchParams[3],
+        }
+      : {}),
+  };
 
   try {
     const response = await axios.get<Photo[]>(`${API_URL}${endpoint}`, {

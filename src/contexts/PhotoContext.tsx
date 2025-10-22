@@ -6,7 +6,6 @@ import {
 } from "@tanstack/react-query";
 import { fetchPhotos, deletePhoto, deletePhotos } from "../api/api";
 import { Photo } from "../models/DataModel";
-import { SearchParams } from "../hooks/usePhotoSearch";
 
 interface PhotoContextType {
   photos: Photo[];
@@ -24,7 +23,7 @@ export const PhotoProvider = ({
   searchParams,
   children,
 }: {
-  searchParams: SearchParams;
+  searchParams: string[];
   children: React.ReactNode;
 }) => {
   const queryClient = useQueryClient();
@@ -33,7 +32,7 @@ export const PhotoProvider = ({
     useInfiniteQuery({
       queryKey: ["photos", searchParams],
       queryFn: ({ pageParam }) =>
-        fetchPhotos({ lastId: pageParam, ...searchParams }),
+        fetchPhotos({ lastId: pageParam, searchParams }),
       getNextPageParam: (lastPage: Photo[]) => {
         if (lastPage.length < 10) return undefined;
         return lastPage[lastPage.length - 1].ID;

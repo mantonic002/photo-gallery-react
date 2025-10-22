@@ -18,5 +18,6 @@ export interface NominatimResult {
   place_id: number;
   lat: string;
   lon: string;
+  boundingbox: string[]; // [latMin, latMax, longMin, longMax]
   display_name: string;
 }
