@@ -5,16 +5,16 @@ A React frontend for the Photo Backup App, a self-hosted alternative to Google P
 ## Features
 
 - **Photo Gallery**: Displays thumbnails grouped by date.
-- **Pagination**: Paginates photos with a "Load More" button (infinite scroll not yet implemented).
+- **Pagination**: Fetches photos with on scroll.
 - **Full-Screen Slider**: View photos with navigation and deletion.
-- **Geolocation Search**: Find photos by location and distance.
+- **Geolocation Search**: Find photos by location (works with bounding box).
 - **Bulk Deletion**: Select and delete multiple photos.
 
 ## Prerequisites
 
 - **Node.js**
 - **Backend**: Running Photo Backup App backend (see [backend README](https://github.com/mantonic002/photo-backup)).
-- **Dependencies**: `react`, `react-dom`, `react-icons`, `axios`.
+- **Dependencies**: `react`, `react-dom`, `react-icons`, `axios`, `react-query`.
 
 ## Setup
 
@@ -42,7 +42,7 @@ A React frontend for the Photo Backup App, a self-hosted alternative to Google P
 4. **Run**:
 
    ```bash
-   npm run dev
+   npm start
    ```
 
    Access at `http://localhost:3000`.
@@ -58,23 +58,20 @@ A React frontend for the Photo Backup App, a self-hosted alternative to Google P
 - `src/components/LocationSearch.tsx`: Location search form.
 - `src/api/api.ts`: API functions for backend interaction.
 - `src/models/DataModel.ts`: `Photo` interface.
+- `src/contexts/AuthContext.tsx` : Context provider for login func, and logedIn state.
+- `src/contexts/PhotoContext.tsx` : Context provider for photos infinite query with deletion mutations.
 
 ## Usage
 
 - **View Photos**: Loads photos grouped by date; click "Load More" for more.
 - **Full-Screen View**: Click a thumbnail to view, navigate, or delete.
-- **Search**: Enter location and distance to find photos.
+- **Search**: Enter location to find photos.
 - **Delete**: Select photos with checkmarks; delete with trash button.
 
 ## API Integration
 
 - Nominatim public API for text to coordinates conversion
 - See [backend repo](https://github.com/mantonic002/photo-backup)
-
-## Notes
-
-- **Infinite Scroll**: Not implemented; "Load More" button used instead.
-- **Auth**: Not implemented yet.
 
 ## Backend
 
